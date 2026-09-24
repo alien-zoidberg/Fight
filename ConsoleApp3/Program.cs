@@ -1,21 +1,36 @@
-﻿// int damage = Random.Shared.Next(1, 11);
-// random.shared.next() creates a "random" number.
+﻿// random.shared.next() creates a "random" number.
 // The first number is included, while the latter is excluded.
 
-int Player1_hp = Random.Shared.Next(50,151);
-int Player2_hp = Random.Shared.Next(50,151);
+Restart:
+// An indicator that goto can use to make the code run from a specified point.
 
-Console.WriteLine($"Bric has {Player1_hp} hp");
+int Player1_hp = Random.Shared.Next(50, 151);
+int Player2_hp = Random.Shared.Next(50,151);
+// HP is randomised
+
+Console.WriteLine($"Brick has {Player1_hp} hp");
 Console.WriteLine($"Stone has {Player2_hp} hp");
 Console.WriteLine("They will now fight to the death");
 Console.WriteLine("");
 Console.ReadLine();
 
-while (true)
+static int damageDealt()
 {
-    int damage1 = Random.Shared.Next(0, 21);
-    Player1_hp -= damage1;
-    if (damage1 == 0)
+    int damage = Random.Shared.Next(1, 21); //Attacks randomly deal 1 to 20 damage.
+    return damage;
+}
+static int hitRate()
+{
+    int hitOrMiss = Random.Shared.Next(1, 11); //There is a 1/10 chance of any attack missing.
+    return hitOrMiss;
+}
+
+int fightStatus = 1;
+// fightStatur works as an indicator weather or not the fight is still going.
+
+while (fightStatus == 1)
+{
+    if (hitRate() == 1)
     {
         Console.WriteLine("Stone missed his attack");
         Console.WriteLine($"Brick took no damage");
@@ -24,16 +39,14 @@ while (true)
     }
     else
     {
+        Player1_hp -= damageDealt();
         Console.WriteLine("Stone hit Brick");
-        Console.WriteLine($"Brick took {damage1} damage");
+        Console.WriteLine($"Brick took {damageDealt()} damage");
         Console.WriteLine($"Current hp: {Player1_hp}");
         Console.WriteLine("");
     }
 
-
-    int damage2 = Random.Shared.Next(0, 21);
-    Player2_hp -= damage2;
-    if (damage2 == 0)
+    if (hitRate() == 1)
     {
         Console.WriteLine("Brick missed his attack");
         Console.WriteLine("Stone took no damage");
@@ -42,8 +55,9 @@ while (true)
     }
     else
     {
+        Player2_hp -= damageDealt();
         Console.WriteLine("Brick hit Stone");
-        Console.WriteLine($"Stone took {damage2} damage");
+        Console.WriteLine($"Stone took {damageDealt()} damage");
         Console.WriteLine($"Current hp: {Player2_hp}");
         Console.WriteLine("");
     }
@@ -66,17 +80,29 @@ while (true)
     }
 }
 
-// break imediatly ends a loop.
+fightStatus--;
+while (fightStatus == 0)
+// Basicly, if the fight is over this code will run.
+{
+    Console.WriteLine("Press [r] to restart");
+    string restart = Console.ReadLine();
+    restart = restart.ToLower();
+    if (restart == "r")
+    {
+        Console.WriteLine(""); //This will just leave an empty line.
+        goto Restart;
+        // goto will make the code run from the specified marker. In this case "Restart".
+    }
+    else
+    {
+        break;
+    }
+}
 
-// while (hp1 > 0 && hp2 > 0)
-// {
-//     Console.WriteLine("It's Alive!");
-//     hp1 -= 10;
-// }
+// break imediatly ends a loop.
 
 // Loop, code that reapeats.
 // While(), is a continuous loop. If the statment in the brakets is true it will continue to loop.
 // An infinete loop is a loop that can not end.
-
 
 Console.ReadLine();
